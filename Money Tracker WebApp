@@ -1,0 +1,69 @@
+- /public
+  - styles.css
+  - index.html
+- /server
+  - server.js 
+<!--project structure-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Money Tracker</title>
+</head>
+<body>
+    <h1>Money Tracker</h1>
+    <!-- Your HTML content for expenses and income entry forms -->
+</body>
+</html>
+/* these is save as index.html */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+//Node.js Server(server.js):
+/* Add your styles for forms and layout */
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost/moneyTracker', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Create a schema for expenses and income
+const transactionSchema = new mongoose.Schema({
+    description: String,
+    amount: Number,
+    type: String, // 'income' or 'expense'
+});
+
+const Transaction = mongoose.model('Transaction', transactionSchema);
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
+// Routes
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html');
+});
+
+app.post('/addTransaction', (req, res) => {
+    // Handle adding a new transaction to the database
+    // Use req.body to get form data
+    // Save the transaction using the Transaction model
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
+//to run app
+node server/server.js
